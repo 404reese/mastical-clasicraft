@@ -53,20 +53,20 @@ const Hero = () => {
         </motion.div>
 
         {/* Image Container (Right, Larger, Bottom Layer) */}
-        {/* Defaults to normal flow with top margin, becomes absolute on lg screens */}
+        {/* Stacks below text on mobile, side-by-side on lg screens */}
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           animate={isLoaded ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2 }} // Stagger animation
           // Positioning: Absolute on lg+, right-aligned, spans height, lower z-index, larger width
-          className="w-full mt-10 lg:mt-0 lg:absolute lg:right-0 lg:top-0 lg:bottom-0 lg:w-7/12 xl:w-3/5 lg:z-10"
+          className="w-full lg:mt-0 lg:absolute lg:right-0 lg:top-0 lg:bottom-0 lg:w-7/12 xl:w-3/5 lg:z-10"
         >
           <img
             src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg"
             alt="Modern living room with yellow accent chair"
             // Fill the container, maintain aspect ratio, apply rounding/shadow
             // h-full relies on the parent container having a defined height (lg:min-h-[...])
-            className="w-full h-full object-cover rounded-3xl shadow-xl"
+            className="w-full h-64 sm:h-80 object-cover rounded-3xl shadow-xl lg:h-full"
           />
         </motion.div>
 

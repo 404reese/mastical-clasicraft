@@ -33,8 +33,8 @@ const Navbar = () => {
         <div className="flex justify-between items-center py-4 md:py-6">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link href="/" className="text-gray-800 font-medium text-xl md:text-2xl transition-colors hover:text-gray-600">
-              <img src="/logo.png" alt="ClasiCraft" />
+            <Link href="/" className="text-gray-800 font-medium transition-colors hover:text-gray-600">
+              <img src="/logo.png" alt="ClasiCraft" className="h-6 md:h-8" />
             </Link>
           </div>
 
@@ -43,6 +43,7 @@ const Navbar = () => {
             <NavLink href="/">Home</NavLink>
             <NavLink href="/about">About</NavLink>
             <NavLink href="/products">Products</NavLink>
+            <NavLink href="/policy">Policy</NavLink>
             <NavLink href="/contact">Contact</NavLink>
           </nav>
 
