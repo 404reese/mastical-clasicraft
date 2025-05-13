@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react'; // Added useRef
 import Link from 'next/link';
-import { Search, Menu, X } from 'lucide-react';
+import { Search, Menu, X, ChevronDown } from 'lucide-react';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
+  const productsDropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref for the dropdown close timer
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,10 +20,30 @@ const Navbar = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      // Clear timeout on component unmount
+      if (productsDropdownTimeoutRef.current) {
+        clearTimeout(productsDropdownTimeoutRef.current);
+      }
+    };
   }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const handleProductsMouseEnter = () => {
+    if (productsDropdownTimeoutRef.current) {
+      clearTimeout(productsDropdownTimeoutRef.current);
+      productsDropdownTimeoutRef.current = null;
+    }
+    setIsProductsDropdownOpen(true);
+  };
+
+  const handleProductsMouseLeave = () => {
+    productsDropdownTimeoutRef.current = setTimeout(() => {
+      setIsProductsDropdownOpen(false);
+    }, 2000); // 2-second delay
+  };
 
   return (
     <header 
@@ -39,10 +61,63 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-10">
+          <nav className="hidden md:flex space-x-10 items-center">
             <NavLink href="/">Home</NavLink>
             <NavLink href="/about">About</NavLink>
-            <NavLink href="/products">Products</NavLink>
+            
+            {/* Products Dropdown */}
+            <div 
+              className="relative"
+              onMouseEnter={handleProductsMouseEnter}
+              onMouseLeave={handleProductsMouseLeave}
+            >
+              <div 
+                role="button"
+                tabIndex={0}
+                aria-haspopup="true"
+                aria-expanded={isProductsDropdownOpen}
+                className="py-2 text-sm font-medium transition-colors relative group cursor-pointer flex items-center"
+                style={{ color: '#7a2353' }}
+              >
+                Products
+                <ChevronDown 
+                  size={16} 
+                  className={`ml-1 transition-transform duration-200 ${isProductsDropdownOpen ? 'rotate-180' : ''}`} 
+                />
+                <span
+                  className="absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full"
+                  style={{ backgroundColor: '#7a2353' }}
+                ></span>
+                <style jsx>{`
+                  div.group:hover {
+                    color: #b2889c !important;
+                  }
+                  div.group:hover span {
+                    background-color: #b2889c !important;
+                  }
+                  div.group:hover svg {
+                    stroke: #b2889c !important;
+                  }
+                  div.group svg {
+                    stroke: #7a2353;
+                    transition: stroke 0.3s ease-in-out, transform 0.2s ease-in-out;
+                  }
+                `}</style>
+              </div>
+
+              {isProductsDropdownOpen && (
+                <div 
+                  className="absolute top-full left-0 mt-1 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 z-20"
+                  // onMouseEnter and onMouseLeave are handled by the parent div
+                >
+                  <DropdownItem href="/products/small-furniture" closeDropdown={() => { setIsProductsDropdownOpen(false); if (productsDropdownTimeoutRef.current) clearTimeout(productsDropdownTimeoutRef.current); }}>Small Furniture</DropdownItem>
+                  <DropdownItem href="/products/trays" closeDropdown={() => { setIsProductsDropdownOpen(false); if (productsDropdownTimeoutRef.current) clearTimeout(productsDropdownTimeoutRef.current); }}>Trays</DropdownItem>
+                  <DropdownItem href="/products/kitchen-utility" closeDropdown={() => { setIsProductsDropdownOpen(false); if (productsDropdownTimeoutRef.current) clearTimeout(productsDropdownTimeoutRef.current); }}>Kitchen Utility</DropdownItem>
+                  <DropdownItem href="/products/decor" closeDropdown={() => { setIsProductsDropdownOpen(false); if (productsDropdownTimeoutRef.current) clearTimeout(productsDropdownTimeoutRef.current); }}>Home/Office decor</DropdownItem>
+                </div>
+              )}
+            </div>
+
             <NavLink href="/policy">Policy</NavLink>
             <NavLink href="/contact">Contact</NavLink>
           </nav>
@@ -112,6 +187,32 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
         }
         .group:hover span {
           background-color: #b2889c !important;
+        }
+      `}</style>
+    </Link>
+  );
+};
+
+// New DropdownItem component
+const DropdownItem = ({ href, children, closeDropdown }: { href: string; children: React.ReactNode; closeDropdown: () => void }) => {
+  return (
+    <Link
+      href={href}
+      onClick={() => {
+        // Call the original closeDropdown logic which now also clears the timer
+        closeDropdown();
+      }}
+      className="block w-full text-left px-4 py-2 text-sm"
+    >
+      {children}
+      <style jsx>{`
+        a {
+          color: #374151;
+          transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        }
+        a:hover {
+          background-color: #f9fafb;
+          color: #7a2353 !important; 
         }
       `}</style>
     </Link>
