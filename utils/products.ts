@@ -45,3 +45,55 @@ export function getProducts() {
   ];
 }
 
+export function getKitchenUtilityProducts() {
+  return [
+    {
+      id: 1,
+      name: 'Tissue and Cutlery Stand Global Print',
+      price: 25.00,
+      discountedPrice: 19.00,
+      imageUrl: '/chair.png',
+      category: 'Kitchen Utility',
+      brand: 'ClasiCraft',
+      material: 'MDF and Vinyal Print',
+      assembly: 'Carpenter Assembled',
+      color: 'Duco Brown',
+    },
+    {
+      id: 2,
+      name: 'Tissue and Cutlery Stand Elephant Print',
+      price: 25.00,
+      discountedPrice: 19.00,
+      imageUrl: '/chair.png',
+      category: 'Kitchen Utility',
+      brand: 'ClasiCraft',
+      material: 'MDF and Vinyal Print',
+      assembly: 'Carpenter Assembled',
+      color: 'Duco Brown',
+    },
+    {
+      id: 3,
+      name: 'Cutlery Tray Elephant Print',
+      price: 25.00,
+      discountedPrice: 19.00,
+      imageUrl: '/chair.png',
+      category: 'Kitchen Utility',
+      brand: 'ClasiCraft',
+      material: 'MDF and Vinyal Print',
+      assembly: 'Carpenter Assembled',
+      color: 'Duco Brown',
+    },
+    {
+      id: 4,
+      name: '190 Spoon Stand Gramaphone',
+      price: 25.00,
+      discountedPrice: 19.00,
+      imageUrl: '/chair.png',
+      category: 'Kitchen Utility',
+      brand: 'ClasiCraft',
+      material: 'MDF and Vinyal Print',
+      assembly: 'Carpenter Assembled',
+      color: 'Duco Brown',
+    },
+  ];
+}
